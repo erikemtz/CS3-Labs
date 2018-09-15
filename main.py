@@ -1,14 +1,6 @@
 import os
 import random
 
-
-def get_dirs_and_files(path):
-    dir_list = [directory for directory in os.listdir(path) if os.path.isdir(path + '/' + directory)]
-    file_list = [directory for directory in os.listdir(path) if not os.path.isdir(path + '/' + directory)]
-
-    return dir_list, file_list
-
-
 def classify_pic(path):
     # To be implemented by Diego: Replace with ML model
     if "dog" in path:
@@ -19,21 +11,131 @@ def classify_pic(path):
 
 def process_dir(path):
 
-    dir_list, file_list = get_dirs_and_files(path)
-
-    cat_list = []
-    dog_list = []
-
+    
     # Your code goes here
-    for i,j,k in os.walk(path):
-        print(i)
+
+    # this is used for a future print messages
+    # get current working directory
+    #temp = path.split('\\')
+    #tempLength = len(temp)
+    #currentFolder = temp[tempLength-1]
+    #print("Currently searching through " + path)
+    
+    # array used to keep track of directory names
+    directory_list = []
+
+    #counters
+    file_count = 0
+    directory_count = 0
+
+    # get names of all files inside current directory and being contained in directory_files
+    directory_files = os.listdir()
+
+    # classify elements by filetype and append to appropriate list
+    for i in directory_files:
+        # if the current file at i is a file and a jpg image, then append to the global variable
+        if os.path.isfile(i):
+            if ".jpg" in i:
+                picture_list.append(os.getcwd() + '\\' + i)
+                file_count = file_count + 1
+        # if current interation is not a file and not a jpg then it is a directory
+        else:
+            directory_list.append(i)
+            directory_count+=1
+            
+    
+    # UNCOMMENT TO SEE RECURSION IN ACTION
+    ###################################################################################################################
+    ###################################################################################################################
+    # inform user of what files were found as well as append them to file array
+    #if file_count == 1 :
+        #print("There was " + str(file_count) + " picture found...")
+        #dont uncomment print statements, too much info is being displayed, results are the only thing that is needed
+        #for i in file_list:
+            #print(os.getcwd() + '\\' + i)
+    # this is just so that the print messages are grammatically correct
+    #elif file_count > 1:
+        #print("There was " + str(file_count) + " pictures found...")
+        #for i in file_list:
+            #print(os.getcwd() + '\\' + i)
+    #else:
+        #print("No files pictures found in " + currentFolder)
+    
+    #print("")
+    #print("")
+    
+    # then inform user of which directories were found and append them to the directory list
+    #if directory_count == 1:
+        #print("There was " + str(directory_count) + " directory found")
+        
+        #for i in directory_list:
+            #print(os.getcwd() + '\\' + i)
+    # this is just so that the print messages are grammatically correct
+    #elif directory_count >1:
+        #print("There was " + str(directory_count) + " directories found")
+        #for i in directory_list:
+            #print(os.getcwd() + '\\' + i)
+    #else:
+        #print("No directories found in " + currentFolder)    
+
+    #print("")
+    #print("") 
+    ###################################################################################################################
+    ###################################################################################################################
+
+    # if current directory is completely empty,
+    if file_count == 0 and directory_count == 0:
+        return
+    # if current directory has no more directories to traverse through, return
+    if directory_count == 0:
+        return
+    
+    # iterate through all directories recursively within current one
+    for i in directory_list:
+            temp = path+'\\'+i
+            os.chdir(temp)
+            process_dir(temp)
+            os.chdir(path)
+    return
     
 
-
 def main():
-    start_path = './' # current directory
+    print("STARTING main.py")
+    print("***************************************************************************************************************")
 
-    process_dir(start_path)
+    # variable to contain cat lists and dog lists
+    dog_list = []
+    cat_list = []
 
+    # find names of all jpg images
+    process_dir(os.getcwd())
+
+    # separate the pictures using classify_pic
+    for i in picture_list:
+        if classify_pic(i)>.5:
+            dog_list.append(i)
+        else:
+            cat_list.append(i)
+    
+    # print dog results
+    print("Total pictures of dogs found = " + str(len(dog_list)))
+    print("Address for dog pictures...")
+    print("")
+    for i in dog_list:
+        print(i)
+    
+    print("")
+    print("")
+    
+    # print cat results
+    print("Total pictures of cats found = " + str(len(cat_list)))
+    print("Adress for cat pictures...")
+    print("")
+    for i in cat_list:
+        print(i)
+
+
+# global variable used
+picture_list = []
 
 main()
