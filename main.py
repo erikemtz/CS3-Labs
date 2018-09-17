@@ -1,3 +1,11 @@
+# Course: CS2302
+# Author: Rivera, Erik
+# Assignments: Lab 1, Option A
+# Instructor:Diego Aguirre
+# T.A: Manoj Saha
+# Last Modification: 9/15/16
+# Purpose: Scan jpg images and return the address of pictures of cats and dogs
+
 import os
 import random
 
@@ -14,7 +22,7 @@ def process_dir(path):
     
     # Your code goes here
 
-    # this is used for a future print messages
+    # this is used for a future print messages, not being used currently
     # get current working directory
     #temp = path.split('\\')
     #tempLength = len(temp)
@@ -28,17 +36,17 @@ def process_dir(path):
     file_count = 0
     directory_count = 0
 
-    # get names of all files inside current directory and being contained in directory_files
+    # get names of all files inside current directory and have them be contained in directory_files
     directory_files = os.listdir()
 
     # classify elements by filetype and append to appropriate list
     for i in directory_files:
-        # if the current file at i is a file and a jpg image, then append to the global variable
+        # if the current file at i is a file and a jpg image, then append to the global variable,  picture_list
         if os.path.isfile(i):
             if ".jpg" in i:
                 picture_list.append(os.getcwd() + '\\' + i)
                 file_count = file_count + 1
-        # if current interation is not a file and not a jpg then it is a directory
+        # if current interation is not a file and not a jpg then it is a directory, append to directory list
         else:
             directory_list.append(i)
             directory_count+=1
@@ -83,7 +91,7 @@ def process_dir(path):
     ###################################################################################################################
     ###################################################################################################################
 
-    # if current directory is completely empty,
+    # if current directory is completely empty, there is nothing to do, return
     if file_count == 0 and directory_count == 0:
         return
     # if current directory has no more directories to traverse through, return
@@ -103,14 +111,14 @@ def main():
     print("STARTING main.py")
     print("***************************************************************************************************************")
 
-    # variable to contain cat lists and dog lists
+    # lists to contain addresses of dog pictures and cat pictures
     dog_list = []
     cat_list = []
 
     # find names of all jpg images
     process_dir(os.getcwd())
 
-    # separate the pictures using classify_pic
+    # separate the pictures using classify_pic, and populate cat list, and dog list
     for i in picture_list:
         if classify_pic(i)>.5:
             dog_list.append(i)
