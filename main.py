@@ -24,7 +24,7 @@ def process_dir(path):
 
     # this is used for a future print messages, not being used currently
     # get current working directory
-    #temp = path.split('\\')
+    #temp = path.split('/')
     #tempLength = len(temp)
     #currentFolder = temp[tempLength-1]
     #print("Currently searching through " + path)
@@ -44,7 +44,7 @@ def process_dir(path):
         # if the current file at i is a file and a jpg image, then append to the global variable,  picture_list
         if os.path.isfile(i):
             if ".jpg" in i:
-                picture_list.append(os.getcwd() + '\\' + i)
+                picture_list.append(os.getcwd() + '/' + i)
                 file_count = file_count + 1
         # if current interation is not a file and not a jpg then it is a directory, append to directory list
         else:
@@ -55,17 +55,17 @@ def process_dir(path):
     # UNCOMMENT TO SEE RECURSION IN ACTION
     ###################################################################################################################
     ###################################################################################################################
-    # inform user of what files were found as well as append them to file array
+    #inform user of what files were found as well as append them to file array
     #if file_count == 1 :
         #print("There was " + str(file_count) + " picture found...")
         #dont uncomment print statements, too much info is being displayed, results are the only thing that is needed
         #for i in file_list:
-            #print(os.getcwd() + '\\' + i)
+            #print(os.getcwd() + '/' + i)
     # this is just so that the print messages are grammatically correct
     #elif file_count > 1:
         #print("There was " + str(file_count) + " pictures found...")
         #for i in file_list:
-            #print(os.getcwd() + '\\' + i)
+            #print(os.getcwd() + '/' + i)
     #else:
         #print("No files pictures found in " + currentFolder)
     
@@ -77,12 +77,12 @@ def process_dir(path):
         #print("There was " + str(directory_count) + " directory found")
         
         #for i in directory_list:
-            #print(os.getcwd() + '\\' + i)
+            #print(os.getcwd() + '/' + i)
     # this is just so that the print messages are grammatically correct
     #elif directory_count >1:
         #print("There was " + str(directory_count) + " directories found")
         #for i in directory_list:
-            #print(os.getcwd() + '\\' + i)
+            #print(os.getcwd() + '/' + i)
     #else:
         #print("No directories found in " + currentFolder)    
 
@@ -91,16 +91,14 @@ def process_dir(path):
     ###################################################################################################################
     ###################################################################################################################
 
-    # if current directory is completely empty, there is nothing to do, return
-    if file_count == 0 and directory_count == 0:
-        return
     # if current directory has no more directories to traverse through, return
     if directory_count == 0:
         return
     
     # iterate through all directories recursively within current one
     for i in directory_list:
-            temp = path+'\\'+i
+            temp = path+'/'+i
+            print(temp)
             os.chdir(temp)
             process_dir(temp)
             os.chdir(path)
